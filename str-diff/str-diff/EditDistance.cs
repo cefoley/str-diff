@@ -53,7 +53,7 @@ namespace str_diff
                 }
         }
 
-        private int Min(int x, int y, int z)
+        public static int Min(int x, int y, int z)
         {
             return Math.Min(x, Math.Min(y, z));
         }

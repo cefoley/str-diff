@@ -71,5 +71,31 @@ namespace str_diff
             Diff diff = DistanceBetween(a, b);
             Assert.AreEqual(expected, diff.AreEqual(), message);
         }
+
+        [TestMethod]
+        public void EditStringA()
+        {
+            AssertEditStringA("", "", "");
+            AssertEditStringA("-", "a", "");
+            AssertEditStringA("--", "ab", "");
+            AssertEditStringA("+", "", "a");
+            AssertEditStringA("++", "", "ab");
+            AssertEditStringA("=", "a", "a");
+            AssertEditStringA("----===", "abcdxyz", "xyz");
+            AssertEditStringA("++++===", "xyz", "abcdxyz");
+            AssertEditStringA("----===-", "abcdxyzh", "xyz");
+            AssertEditStringA("----=-==-", "abcdxpyzh", "xyz");
+            AssertEditStringA("++++=+==+", "xyz", "abcdxpyzh");
+            AssertEditStringA("?==", "Axy", "Bxy");
+            AssertEditStringA("=?=", "xAy", "xBy");
+        }
+
+        private void AssertEditStringA(string expected, string a, string b)
+        {
+            string message = Message(a, b);
+            Diff diff = DistanceBetween(a, b);
+            Assert.AreEqual(expected, diff.EditStringA(), message);
+
+        }
     }
 }
