@@ -76,5 +76,20 @@ namespace str_diff
                 j--;
             }
         }
+
+        public string EditStringB()
+        {
+            StringBuilder result = new StringBuilder();
+            foreach(char c in EditStringA())
+            {
+                if (c == '+')
+                    result.Append('-');
+                else if (c == '-')
+                    result.Append('+');
+                else
+                    result.Append(c);
+            }
+            return result.ToString();
+        }
     }
 }
