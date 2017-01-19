@@ -19,5 +19,10 @@ namespace str_diff
         {
             return matrix;
         }
+
+        public bool AreEqual()
+        {
+            return matrix[matrix.Length - 1][matrix[0].Length - 1] == 0;
+        }
     }
 }
