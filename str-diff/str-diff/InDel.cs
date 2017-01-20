@@ -8,9 +8,9 @@ namespace str_diff
 {
     public class InDel
     {
-        private IList<Edit> edits;
+        private IEnumerable<Edit> edits;
 
-        public InDel(IList<Edit> edits)
+        public InDel(IEnumerable<Edit> edits)
         {
             this.edits = edits;
         }
