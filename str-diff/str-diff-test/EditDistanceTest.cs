@@ -122,7 +122,38 @@ namespace str_diff
             Assert.AreEqual(expected, diff.EditStringB(), message);
         }
 
+        [TestMethod]
+        public void InDel()
+        {
+            AssertInDel("", "", "");
+            AssertInDel("={a}", "a", "a");
+            AssertInDel("={abc}", "abc", "abc");
+            AssertInDel("-{abc}", "abc", "");
+            AssertInDel("+{abc}", "", "abc");
+            AssertInDel("-{abc}+{xyz}", "abc", "xyz");
+            AssertInDel("-{ab}+{x}={123}-{c}+{yz}", "ab123c", "x123yz");
+        }
 
+        private void AssertInDel(string expected, string a, string b)
+        {
+            string message = Message(a, b);
+            InDel indel = DistanceBetween(a, b).InDel();
+            Assert.AreEqual(expected, IndelToString(indel), message);
+        }
 
+        private string IndelToString(InDel indel)
+        {
+            IEnumerable<Edit> edits = indel.Edits();
+            string result = "";
+            foreach (Edit e in edits)
+                result += EditToString(e);
+            return result;
+        }
+
+        private string EditToString(Edit e)
+        {
+            string format = "{0}{{{1}}}";
+            return string.Format(format, e.Operation(), e.Text());
+        }
     }
 }

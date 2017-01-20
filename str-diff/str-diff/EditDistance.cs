@@ -20,7 +20,7 @@ namespace str_diff
         public Diff Diff()
         {
             int[][] matrix = MakeMatrix();
-            return new Diff(matrix);
+            return new Diff(matrix, a, b);
         }
 
         private int[][] MakeMatrix()
