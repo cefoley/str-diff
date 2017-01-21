@@ -25,19 +25,44 @@ namespace str_diff
 
         public string EditStringA()
         {
-            while (HasCellsAbove() && HasCellsLeft())
-            {
-                if (IsSame())
-                    RecordSame();
-                else if (IsInsert())
-                    RecordInsert();
-                else if (IsDelete())
-                    RecordDelete();
-            }
+            while (IsNotAtEdgeOfMatrix())
+                RecordOperationsFromMiddleOfMatrix();
+
+            RecordRemainingDeletes();
+            RecordRemainingInserts();
+
+            return EditString();
+        }
+
+        private bool IsNotAtEdgeOfMatrix()
+        {
+            return HasCellsAbove() && HasCellsLeft();
+        }
+
+        private void RecordOperationsFromMiddleOfMatrix()
+        {
+            if (IsSame())
+                RecordSame();
+            else if (IsInsert())
+                RecordInsert();
+            else if (IsDelete())
+                RecordDelete();
+        }
+
+        private void RecordRemainingDeletes()
+        {
             while (HasCellsAbove())
                 RecordDelete();
+        }
+
+        private void RecordRemainingInserts()
+        {
             while (HasCellsLeft())
                 RecordInsert();
+        }
+
+        private string EditString()
+        {
             Reverse(result);
             return result.ToString();
         }
