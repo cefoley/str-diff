@@ -5,54 +5,98 @@ namespace str_diff
 {
     class EditStringBuilder
     {
-        private int[][] matrix;
-        private string a;
-        private string b;
+        private readonly int[][] matrix;
+        private readonly string a;
+        private readonly string b;
+
+        private int i;
+        private int j;
+        private StringBuilder result;
 
         public EditStringBuilder(int[][] matrix, string a, string b)
         {
             this.matrix = matrix;
             this.a = a;
             this.b = b;
+            i = matrix.Length - 1;
+            j = matrix[0].Length - 1;
+            result = new StringBuilder();
         }
 
         public string EditStringA()
         {
-            StringBuilder result = new StringBuilder();
-            int i = matrix.Length - 1;
-            int j = matrix[0].Length - 1;
-            while (i > 0 && j > 0)
+            while (HasCellsAbove() && HasCellsLeft())
             {
-                int nextMin = Math.Min(matrix[i - 1][j], matrix[i][j - 1]);
-                if (matrix[i - 1][j - 1] == matrix[i][j] && matrix[i][j] <= nextMin)
+                int nextMin = Math.Min(ValueAbove(), ValueLeft());
+                if (ValueDiagonal() == ValueHere() && ValueHere() <= nextMin)
                 {
                     result.Append("=");
-                    i--;
-                    j--;
+                    MoveUp();
+                    MoveLeft();
                 }
-                else if (matrix[i][j - 1] == nextMin)
+                else if (ValueLeft() == nextMin)
                 {
                     result.Append("+");
-                    j--;
+                    MoveLeft();
                 }
-                else if (matrix[i - 1][j] == nextMin)
+                else if (ValueAbove() == nextMin)
                 {
                     result.Append("-");
-                    i--;
+                    MoveUp();
                 }
             }
-            while (i > 0)
+            while (HasCellsAbove())
             {
                 result.Append("-");
-                i--;
+                MoveUp();
             }
-            while (j > 0)
+            while (HasCellsLeft())
             {
                 result.Append("+");
-                j--;
+                MoveLeft();
             }
             Reverse(result);
             return result.ToString();
+        }
+
+        private bool HasCellsAbove()
+        {
+            return i > 0;
+        }
+
+        private bool HasCellsLeft()
+        {
+            return j > 0;
+        }
+
+        private int ValueAbove()
+        {
+            return matrix[i - 1][j];
+        }
+
+        private int ValueLeft()
+        {
+            return matrix[i][j - 1];
+        }
+
+        private int ValueDiagonal()
+        {
+            return matrix[i - 1][j - 1];
+        }
+
+        private int ValueHere()
+        {
+            return matrix[i][j];
+        }
+
+        private void MoveUp()
+        {
+            i--;
+        }
+
+        private void MoveLeft()
+        {
+            j--;
         }
 
         private static void Reverse(StringBuilder result)
