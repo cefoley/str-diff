@@ -29,32 +29,16 @@ namespace str_diff
             {
                 int nextMin = Math.Min(ValueAbove(), ValueLeft());
                 if (ValueDiagonal() == ValueHere() && ValueHere() <= nextMin)
-                {
-                    result.Append("=");
-                    MoveUp();
-                    MoveLeft();
-                }
+                    RecordSame();
                 else if (ValueLeft() == nextMin)
-                {
-                    result.Append("+");
-                    MoveLeft();
-                }
+                    RecordInsert();
                 else if (ValueAbove() == nextMin)
-                {
-                    result.Append("-");
-                    MoveUp();
-                }
+                    RecordDelete();
             }
             while (HasCellsAbove())
-            {
-                result.Append("-");
-                MoveUp();
-            }
+                RecordDelete();
             while (HasCellsLeft())
-            {
-                result.Append("+");
-                MoveLeft();
-            }
+                RecordInsert();
             Reverse(result);
             return result.ToString();
         }
@@ -89,9 +73,28 @@ namespace str_diff
             return matrix[i][j];
         }
 
+        private void RecordSame()
+        {
+            result.Append("=");
+            MoveUp();
+            MoveLeft();
+        }
+
+        private void RecordDelete()
+        {
+            result.Append("-");
+            MoveUp();
+        }
+
         private void MoveUp()
         {
             i--;
+        }
+
+        private void RecordInsert()
+        {
+            result.Append("+");
+            MoveLeft();
         }
 
         private void MoveLeft()
