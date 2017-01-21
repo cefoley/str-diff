@@ -27,12 +27,11 @@ namespace str_diff
         {
             while (HasCellsAbove() && HasCellsLeft())
             {
-                int nextMin = Math.Min(ValueAbove(), ValueLeft());
-                if (ValueDiagonal() == ValueHere() && ValueHere() <= nextMin)
+                if (IsSame())
                     RecordSame();
-                else if (ValueLeft() == nextMin)
+                else if (IsInsert())
                     RecordInsert();
-                else if (ValueAbove() == nextMin)
+                else if (IsDelete())
                     RecordDelete();
             }
             while (HasCellsAbove())
@@ -41,6 +40,26 @@ namespace str_diff
                 RecordInsert();
             Reverse(result);
             return result.ToString();
+        }
+
+        private bool IsSame()
+        {
+            return ValueDiagonal() == ValueHere() && ValueHere() <= NextMin();
+        }
+
+        private bool IsInsert()
+        {
+            return ValueLeft() == NextMin();
+        }
+
+        private bool IsDelete()
+        {
+            return ValueAbove() == NextMin();
+        }
+
+        private int NextMin()
+        {
+            return Math.Min(ValueAbove(), ValueLeft());
         }
 
         private bool HasCellsAbove()
