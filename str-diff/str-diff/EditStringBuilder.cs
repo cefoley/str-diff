@@ -6,24 +6,24 @@ namespace str_diff
     class EditStringBuilder
     {
         private readonly int[][] matrix;
-        private readonly string a;
-        private readonly string b;
+        private readonly string source;
+        private readonly string target;
 
-        private int i;
-        private int j;
+        private int currentRow;
+        private int currentColumn;
         private StringBuilder result;
 
-        public EditStringBuilder(int[][] matrix, string a, string b)
+        public EditStringBuilder(int[][] matrix, string source, string target)
         {
             this.matrix = matrix;
-            this.a = a;
-            this.b = b;
-            i = matrix.Length - 1;
-            j = matrix[0].Length - 1;
+            this.source = source;
+            this.target = target;
+            currentRow = matrix.Length - 1;
+            currentColumn = matrix[0].Length - 1;
             result = new StringBuilder();
         }
 
-        public string EditStringA()
+        public string Build()
         {
             while (IsNotAtEdgeOfMatrix())
                 RecordOperationsFromMiddleOfMatrix();
@@ -89,32 +89,32 @@ namespace str_diff
 
         private bool HasCellsAbove()
         {
-            return i > 0;
+            return currentRow > 0;
         }
 
         private bool HasCellsLeft()
         {
-            return j > 0;
+            return currentColumn > 0;
         }
 
         private int ValueAbove()
         {
-            return matrix[i - 1][j];
+            return matrix[currentRow - 1][currentColumn];
         }
 
         private int ValueLeft()
         {
-            return matrix[i][j - 1];
+            return matrix[currentRow][currentColumn - 1];
         }
 
         private int ValueDiagonal()
         {
-            return matrix[i - 1][j - 1];
+            return matrix[currentRow - 1][currentColumn - 1];
         }
 
         private int ValueHere()
         {
-            return matrix[i][j];
+            return matrix[currentRow][currentColumn];
         }
 
         private void RecordSame()
@@ -132,7 +132,7 @@ namespace str_diff
 
         private void MoveUp()
         {
-            i--;
+            currentRow--;
         }
 
         private void RecordInsert()
@@ -143,7 +143,7 @@ namespace str_diff
 
         private void MoveLeft()
         {
-            j--;
+            currentColumn--;
         }
 
         private static void Reverse(StringBuilder result)

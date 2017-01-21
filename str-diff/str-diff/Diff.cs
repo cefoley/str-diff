@@ -28,7 +28,7 @@ namespace str_diff
 
         public string EditStringA()
         {
-            return new EditStringBuilder(matrix, a, b).EditStringA();
+            return new EditStringBuilder(matrix, a, b).Build();
         }
 
         public string EditStringB()
