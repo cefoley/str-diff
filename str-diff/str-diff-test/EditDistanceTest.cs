@@ -86,8 +86,9 @@ namespace str_diff
             AssertEditStringA("----===-", "abcdxyzh", "xyz");
             AssertEditStringA("----=-==-", "abcdxpyzh", "xyz");
             AssertEditStringA("++++=+==+", "xyz", "abcdxpyzh");
-            AssertEditStringA("?==", "Axy", "Bxy");
-            AssertEditStringA("=?=", "xAy", "xBy");
+            AssertEditStringA("-+", "a", "b");
+            AssertEditStringA("-+==", "Axy", "Bxy");
+            AssertEditStringA("=-+=", "xAy", "xBy");
         }
 
         private void AssertEditStringA(string expected, string a, string b)
@@ -111,8 +112,9 @@ namespace str_diff
             AssertEditStringB("++++===+", "abcdxyzh", "xyz");
             AssertEditStringB("++++=+==+", "abcdxpyzh", "xyz");
             AssertEditStringB("----=-==-", "xyz", "abcdxpyzh");
-            AssertEditStringB("?==", "Axy", "Bxy");
-            AssertEditStringB("=?=", "xAy", "xBy");
+            AssertEditStringB("+-", "a", "b");
+            AssertEditStringB("+-==", "Axy", "Bxy");
+            AssertEditStringB("=+-=", "xAy", "xBy");
         }
 
         private void AssertEditStringB(string expected, string a, string b)
@@ -154,6 +156,13 @@ namespace str_diff
         {
             string format = "{0}{{{1}}}";
             return string.Format(format, e.Operation(), e.Text());
+        }
+
+        [TestMethod]
+        public void SuperfluousEditBug()
+        {
+            AssertEditStringA("==+", "aa", "aab");
+            AssertInDel("={aa}+{b}", "aa", "aab");
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace str_diff
 {
@@ -37,21 +34,20 @@ namespace str_diff
             int j = matrix[0].Length - 1;
             while (i > 0 && j > 0)
             {
-                int nextMin = EditDistance.Min(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]);
-                if (matrix[i - 1][j - 1] == nextMin)
+                int nextMin = Math.Min(matrix[i - 1][j], matrix[i][j - 1]);
+                if (matrix[i - 1][j - 1] == matrix[i][j] && matrix[i][j] <= nextMin)
                 {
-                    string edit = matrix[i][j] == nextMin ? "=" : "?";
-                    result.Append(edit);
+                    result.Append("=");
                     i--;
+                    j--;
+                } else if (matrix[i][j-1] == nextMin)
+                {
+                    result.Append("+");
                     j--;
                 } else if (matrix[i-1][j] == nextMin)
                 {
                     result.Append("-");
                     i--;
-                } else
-                {
-                    result.Append("+");
-                    j--;
                 }
             }
             while (i > 0)
