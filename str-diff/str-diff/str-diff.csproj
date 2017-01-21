@@ -43,6 +43,7 @@
     <Compile Include="Diff.cs" />
     <Compile Include="Edit.cs" />
     <Compile Include="EditDistance.cs" />
+    <Compile Include="EditStringBuilder.cs" />
     <Compile Include="InDel.cs" />
     <Compile Include="IndelHtmlConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
